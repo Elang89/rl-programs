@@ -76,8 +76,25 @@ def main(means: List[float], num_trials: int = 100000, decay: float = 1.0, epsil
     plt.legend(["Bandit Approximation", "Mean 1", "Mean 2", "Mean 3"], loc="upper left",  bbox_to_anchor=(-0.40, 1.05))
     fig.savefig(f"plots/{timestamp}_eps_{initial_epsilon:.2f}_bandits.png", dpi=600, bbox_inches = "tight")
 
+    return cumulative_average
+
+
 if __name__ == "__main__":
     m1, m2, m3 = 1.5, 2.5, 3.5
     c_09 = main([m1, m2, m3], num_trials=100000, decay=0.9, epsilon=0.9, reward_threshold = 0)
     c_05 = main([m1, m2, m3], num_trials=100000, decay=0.7, epsilon=0.5, reward_threshold = 25000.0)
     c_01 = main([m1, m2, m3], num_trials=100000, decay=0.5, epsilon=0.1, reward_threshold = 10000.0)
+
+
+    fig = plt.figure(dpi=200, figsize=(12, 6))
+    plt.title("EPS Comparison)")
+    plt.ylabel("Mean", fontsize=16, labelpad=20)
+    plt.xlabel("Trials", fontsize=16, labelpad=20)
+    plt.xticks(fontsize=14)
+    plt.yticks(fontsize=14)
+    plt.xscale("log")
+    plt.plot(c_09, label="EPS = 0.9", linewidth=4, color="darkorange")
+    plt.plot(c_05, label="EPS = 0.5", linewidth=4)
+    plt.plot(c_01, label="EPS = 0.1", linewidth=4, color="green")
+    plt.legend(loc="upper left",  bbox_to_anchor=(-0.40, 1.05))
+    fig.savefig("plots/EPS.png", dpi=600, bbox_inches = "tight")
